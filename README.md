@@ -60,13 +60,17 @@ node ~/.codex/skills/newcut-video-clipping/scripts/newcut.mjs render \
 
 ### 转行 AI：先找可迁移能力
 
-[![转行 AI：先找可迁移能力](examples/01-transferable-skills.jpg)](examples/01-transferable-skills.mp4)
+![转行 AI：先找可迁移能力](examples/01-transferable-skills.gif)
+
+[▶ 播放带声音的完整视频](https://raw.githubusercontent.com/hahadu4520/newcut-video-clipping-skill/main/examples/01-transferable-skills.mp4)
 
 ### 比较 AI 工具：就跑同一个任务
 
-[![比较 AI 工具：就跑同一个任务](examples/02-compare-ai-tools.jpg)](examples/02-compare-ai-tools.mp4)
+![比较 AI 工具：就跑同一个任务](examples/02-compare-ai-tools.gif)
 
-点击封面查看完整切片。
+[▶ 播放带声音的完整视频](https://raw.githubusercontent.com/hahadu4520/newcut-video-clipping-skill/main/examples/02-compare-ai-tools.mp4)
+
+GIF 会在 README 中直接播放；完整视频保留声音和完整时长。
 
 ## 安全
 
