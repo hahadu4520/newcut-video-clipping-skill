@@ -13,4 +13,4 @@ jobs:
         with:
           node-version: 20
       - run: node scripts/validate-public.mjs
-      - run: node scripts/runtime/cli/newcut.mjs --help
+      - run: node -e "import('./scripts/runtime/packages/newcut-core/src/index.mjs')"
