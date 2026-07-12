@@ -1,0 +1,14 @@
+.env
+.env.*
+!.env.example
+output/
+*.mp4
+*.mov
+*.flv
+*.mkv
+*.mp3
+*.wav
+*.m4a
+*.srt
+*.vtt
+.DS_Store

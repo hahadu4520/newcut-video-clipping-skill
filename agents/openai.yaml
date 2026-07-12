@@ -1,0 +1,4 @@
+interface:
+  display_name: "NewCut Video Clipping"
+  short_description: "Turn long Chinese videos into polished semantic highlight clips"
+  default_prompt: "Use $newcut-video-clipping to transcribe a video, select complete highlights, and render polished clips."

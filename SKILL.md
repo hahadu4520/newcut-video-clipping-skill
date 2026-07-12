@@ -1,0 +1,102 @@
+---
+name: newcut-video-clipping
+description: Transcribe long Chinese videos, semantically select complete standalone highlights, create real-quote hooks, clean pauses and reviewed speech mistakes, generate single-line subtitles and strong viewpoint titles, render clips with FFmpeg, and produce QC artifacts. Use when a user asks to cut livestreams, interviews, podcasts, talks, or other long Chinese videos into publishable short clips.
+---
+
+# NewCut Video Clipping
+
+Create polished clips through a reviewable pipeline. Prefer complete viewpoints over fixed durations and never select highlights by keyword scores.
+
+## Prerequisites
+
+Run the doctor before processing:
+
+```bash
+node <skill-root>/scripts/newcut.mjs doctor
+```
+
+Required: Node.js 20+ and FFmpeg/FFprobe. For transcription, use an existing timestamped transcript, local Whisper, or user-provided Doubao/TOS credentials.
+
+For Doubao setup, read [provider-config.md](references/provider-config.md). Never print, copy, or commit credential values.
+
+## Workflow
+
+### 1. Transcribe and prepare semantic review
+
+With an existing transcript:
+
+```bash
+node <skill-root>/scripts/newcut.mjs process <video> \
+  --transcript <transcript.srt|json|txt> \
+  --output <job-dir>
+```
+
+With Doubao ASR:
+
+```bash
+node <skill-root>/scripts/newcut.mjs process <video> \
+  --asr-provider doubao \
+  --output <job-dir>
+```
+
+The command creates the complete transcript, semantic review, source JSON, selection brief, and plan template. It does not select highlights by itself.
+
+### 2. Read the complete transcript
+
+Read `<job-dir>/语义审阅稿.md` from beginning to end. Build a topic map and enumerate all complete viewpoints before selecting by count or preferred duration.
+
+Do not use:
+
+- Keyword scores.
+- Fixed sliding windows.
+- Silence as proof that a viewpoint ended.
+- Maximum duration during recall.
+- Rounded manual timestamps.
+
+### 3. Write the semantic plan
+
+Write `<job-dir>/semantic-plan.json` using raw utterance indexes. Every final clip must include:
+
+- A complete standalone argument.
+- Explicit `titleLines` with one or two semantically complete lines.
+- A hook copied from a real sentence inside the body.
+- Reviewed cleanup ranges for false starts, speech mistakes, or complex repetitions.
+- Timestamp-addressed subtitle corrections for confirmed ASR errors.
+
+Read [semantic-plan.md](references/semantic-plan.md) before authoring the plan.
+
+### 4. Render
+
+```bash
+node <skill-root>/scripts/newcut.mjs render \
+  --video <video> \
+  --transcript <job-dir>/semantic-source.json \
+  --plan <job-dir>/semantic-plan.json \
+  --output <clips-dir>
+```
+
+The fixed render order is:
+
+```text
+copied real-quote hook -> transition -> cleaned full body -> remapped subtitles
+```
+
+The hook remains in its original body position.
+
+### 5. Quality check
+
+Verify each output is playable and inspect hook, middle, and ending frames. Confirm:
+
+- The viewpoint starts with enough context and ends after its final conclusion.
+- No first or last spoken character is cut.
+- Captions stay on one line and have no punctuation at either edge.
+- Caption chunks represent complete semantic phrases.
+- Title lines are semantically complete and stay inside the safe area.
+- Cleanup does not change the speaker's meaning or remove the original hook.
+- ASR corrections change subtitle display only, not spoken content.
+
+Read [quality-check.md](references/quality-check.md) for the full checklist.
+
+## Examples
+
+Read [examples.md](references/examples.md) for command and JSON examples. The repository intentionally ships no test media or transcript corpus.
