@@ -19,6 +19,34 @@ Required: Node.js 20+ and FFmpeg/FFprobe. For transcription, use an existing tim
 
 For Doubao setup, read [provider-config.md](references/provider-config.md). Never print, copy, or commit credential values.
 
+## Mandatory transcription choice
+
+When the user provides a video but no existing transcript and has not already selected a transcription provider, stop before running any transcription command. Explain both choices in the user's language and ask them to choose:
+
+```text
+开始前请选择转录方式：
+
+1. 本地 Whisper
+   - 不收取 API 费用，音视频不上传到第三方
+   - 首次使用需要下载模型文件
+   - 使用本机计算，长视频可能较慢
+   - 中文准确率和字级时间戳通常不如豆包稳定
+
+2. 豆包语音识别 2.0
+   - 中文和中英混合识别、字级时间戳更适合视频剪辑
+   - 需要注册火山引擎、开通服务并申请自己的 API Key
+   - 按火山引擎实际用量计费
+
+请选择“本地 Whisper”或“豆包语音”。
+```
+
+Wait for the user's answer. Do not silently select a provider. Skip this question only when the user supplied a transcript or explicitly chose a provider in the current request.
+
+After the choice:
+
+- For Whisper, explain that the first run downloads the selected model. Recommend `small` for a faster start or `medium` for better Chinese accuracy, then let the user choose the model when hardware or download size matters.
+- For Doubao, open or link [provider-config.md](references/provider-config.md), guide the user through service activation and `.env.local`, and verify configuration with `doctor`. Never ask the user to paste a secret into chat.
+
 ## Workflow
 
 ### 1. Transcribe and prepare semantic review

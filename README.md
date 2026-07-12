@@ -25,6 +25,15 @@ node ~/.codex/skills/newcut-video-clipping/scripts/newcut.mjs doctor
 
 ## 使用
 
+当用户只提供视频、没有提供转录稿时，Skill 会先说明并询问使用哪种转录方式：
+
+| 方式 | 特点 |
+| --- | --- |
+| 本地 Whisper | 免费、本地运行；首次需要下载模型，长视频速度取决于电脑性能 |
+| 豆包语音识别 2.0 | 中文和字级时间戳更稳定；需要自行开通火山引擎服务和 API Key，按量计费 |
+
+Skill 必须等待用户选择，不会默认替用户决定。
+
 使用已有字幕：
 
 ```bash
@@ -43,6 +52,8 @@ node ~/.codex/skills/newcut-video-clipping/scripts/newcut.mjs process input.mp4 
   --asr-provider doubao \
   --output output/job-001
 ```
+
+豆包申请与字段填写见 [Provider Configuration](references/provider-config.md)。API Key 只保存在本机 `.env.local`，不要发送到聊天或提交到 Git。
 
 让 Codex 使用 `$newcut-video-clipping` 阅读 `语义审阅稿.md` 并生成 `semantic-plan.json`，然后渲染：
 
