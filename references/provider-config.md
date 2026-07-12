@@ -1,8 +1,12 @@
 # Provider Configuration
 
-## Ask before transcribing
+## Configure before requesting media
 
-If the user has not provided a transcript, always present the two choices below and wait for a selection:
+For first-time onboarding, always present the two choices below before asking the user to upload or provide media. Wait for a selection, complete setup, verify it, and only then request the video:
+
+```text
+provider choice -> setup -> verification -> video upload -> transcription
+```
 
 | Choice | Cost | Setup | Privacy and speed | Best for |
 | --- | --- | --- | --- | --- |
@@ -49,6 +53,8 @@ Setup steps:
 4. Open API Key management and create an API Key for the current project.
 5. In the directory where the command will run, copy `.env.example` to `.env.local`.
 6. Fill only your own values locally. Do not paste them into chat and do not commit `.env.local`.
+7. Run the doctor and confirm the environment is ready.
+8. After verification succeeds, ask the user to provide the video.
 
 Required fields for the new console:
 
@@ -82,6 +88,8 @@ node <skill-root>/scripts/newcut.mjs process <video> \
   --asr-provider doubao \
   --output <job-dir>
 ```
+
+Do not request the production video before steps 1-7 are complete.
 
 For ordinary local videos, NewCut extracts mono 16 kHz MP3 audio and submits it directly. A public URL is not normally required.
 

@@ -19,9 +19,21 @@ Required: Node.js 20+ and FFmpeg/FFprobe. For transcription, use an existing tim
 
 For Doubao setup, read [provider-config.md](references/provider-config.md). Never print, copy, or commit credential values.
 
-## Mandatory transcription choice
+## Mandatory onboarding before requesting video
 
-When the user provides a video but no existing transcript and has not already selected a transcription provider, stop before running any transcription command. Explain both choices in the user's language and ask them to choose:
+For a first-time user, choose and verify the transcription setup before asking them to upload or provide a video. Do not wait until a video has already been uploaded. Do not run any media command during onboarding.
+
+Use this order exactly:
+
+```text
+choose transcription provider
+-> complete provider setup
+-> verify the setup
+-> ask for the video
+-> transcribe
+```
+
+First explain both choices in the user's language and ask them to choose:
 
 ```text
 开始前请选择转录方式：
@@ -44,8 +56,20 @@ Wait for the user's answer. Do not silently select a provider. Skip this questio
 
 After the choice:
 
-- For Whisper, explain that the first run downloads the selected model. Recommend `small` for a faster start or `medium` for better Chinese accuracy, then let the user choose the model when hardware or download size matters.
-- For Doubao, open or link [provider-config.md](references/provider-config.md), guide the user through service activation and `.env.local`, and verify configuration with `doctor`. Never ask the user to paste a secret into chat.
+- For Whisper, explain that the first run downloads the selected model. Recommend `small` for a faster start or `medium` for better Chinese accuracy. Install or verify Whisper and FFmpeg first. Only after the environment is ready should you ask the user for a video.
+- For Doubao, open or link [provider-config.md](references/provider-config.md), guide the user through service activation and `.env.local`, and verify configuration before asking for a video. Never ask the user to paste a secret into chat.
+
+For Doubao onboarding, complete these checkpoints in order:
+
+1. The user has opened the Doubao Speech console and activated recording-file recognition 2.0.
+2. The user has created an API Key in the console.
+3. The user has filled `DOUBAO_API_KEY` and `DOUBAO_ASR_RESOURCE_ID` in a local `.env.local` file.
+4. Run `node <skill-root>/scripts/newcut.mjs doctor` without printing secret values.
+5. If required, run a credential connection check that does not need the user's production video.
+6. Confirm that configuration is ready.
+7. Only now ask the user to upload or provide the video file.
+
+If setup is incomplete, remain in onboarding. Do not ask for the production video merely to discover that credentials are missing.
 
 ## Workflow
 
