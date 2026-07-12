@@ -7,6 +7,10 @@ const root = resolve(dirname(fileURLToPath(import.meta.url)), "..");
 const forbiddenExtensions = new Set([
   ".mp4", ".mov", ".flv", ".mkv", ".mp3", ".wav", ".m4a", ".srt", ".vtt",
 ]);
+const allowedShowcases = new Set([
+  "examples/01-transferable-skills.mp4",
+  "examples/02-compare-ai-tools.mp4",
+]);
 const patterns = [
   /DOUBAO_API_KEY[ \t]*=[ \t]*[^ \t#\r\n][^\r\n]*/i,
   /TOS_SECRET_ACCESS_KEY[ \t]*=[ \t]*[^ \t#\r\n][^\r\n]*/i,
@@ -33,7 +37,7 @@ for (const file of files) {
     errors.push(`${path}: environment file is not publishable`);
     continue;
   }
-  if (forbiddenExtensions.has(extname(file).toLowerCase())) {
+  if (forbiddenExtensions.has(extname(file).toLowerCase()) && !allowedShowcases.has(path)) {
     errors.push(`${path}: media and transcript fixtures are not publishable`);
     continue;
   }
